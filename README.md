@@ -1,5 +1,3 @@
-# github_testbot
-
 ## Auto Weather Logger — GitHub Actions Summary
 
 This project automatically logs hourly temperature data for major cities in South Korea using GitHub Actions and the [wttr.in](https://wttr.in) API.
