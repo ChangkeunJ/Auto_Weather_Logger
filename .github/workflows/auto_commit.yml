@@ -1,0 +1,33 @@
+name: Auto Weather Commit
+
+on:
+  schedule:
+    - cron: '0 * * * *'
+  workflow_dispatch:
+
+jobs:
+  commit:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.x'
+
+      - name: Install requests
+        run: pip install requests
+
+      - name: Run script
+        run: python commit.py
+
+      - name: Commit and push
+        run: |
+          git config user.name "ChangkeunJ"
+          git config user.email "reiot92@gmail.com"
+          git add .
+          git commit -m "Auto weather commit $(date)" || echo "Nothing to commit"
+          git push
