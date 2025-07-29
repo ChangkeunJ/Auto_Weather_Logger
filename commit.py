@@ -43,3 +43,6 @@ for kr_name, en_name in cities.items():
         url = f"https://wttr.in/{encoded_city}?format=%t&m"
         response = requests.get(url, timeout=10)
         temp = response.text.strip()
+        weather_data.append(f"{kr_name}: {temp}")
+    except Exception as e:
+        weather_data.append(f"{kr_name}: Error ({str(e)})")
