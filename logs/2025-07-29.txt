@@ -1,0 +1,19 @@
+[2025-07-29 15:42:45]
+Seoul: +85°F
+Busan: +79°F
+Incheon: +83°F
+Daegu: +85°F
+Daejeon: +80°F
+Gwangju: +81°F
+Ulsan: +77°F
+Sejong: +78°F
+Suwon: +84°F
+Cheongju: +78°F
+Jeonju: +73°F
+Gyeongju: +79°F
+Chuncheon: +73°F
+Gangneung: +79°F
+Jeju: +77°F
+Mokpo: +81°F
+Andong: +71°F
+
