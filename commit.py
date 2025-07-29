@@ -46,3 +46,17 @@ for kr_name, en_name in cities.items():
         weather_data.append(f"{kr_name}: {temp}")
     except Exception as e:
         weather_data.append(f"{kr_name}: Error ({str(e)})")
+
+# 항상 로그를 변경시키기 위한 dummy 줄 추가
+dummy_line = f"# Auto log at {time_str}"
+
+# 로그 작성
+log_entry = f"[{time_str}]\n" + "\n".join(weather_data) + f"\n{dummy_line}\n\n"
+
+with open(log_file, "a", encoding="utf-8") as f:
+    f.write(log_entry)
+
+# Git 커밋 및 푸시
+subprocess.run(["git", "add", "."])
+subprocess.run(["git", "commit", "-m", f"Weather auto commit {time_str}"])
+subprocess.run(["git", "push"])
