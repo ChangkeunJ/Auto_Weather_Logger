@@ -2,41 +2,44 @@ import os
 import subprocess
 import datetime
 import requests
+import urllib.parse
 
-# 전국 주요 도시 리스트
-cities = [
-    "Seoul", "Busan", "Incheon", "Daegu", "Daejeon", "Gwangju", "Ulsan", "Sejong",
-    "Suwon", "Cheongju", "Jeonju", "Gyeongju", "Chuncheon", "Gangneung",
-    "Jeju", "Mokpo", "Andong"
-]
+# 한글 도시 이름 → API용 영문 이름 맵핑
+cities = {
+    "서울": "Seoul",
+    "부산": "Busan",
+    "인천": "Incheon",
+    "대구": "Daegu",
+    "대전": "Daejeon",
+    "광주": "Gwangju",
+    "울산": "Ulsan",
+    "세종": "Sejong",
+    "수원": "Suwon",
+    "청주": "Cheongju",
+    "전주": "Jeonju",
+    "경주": "Gyeongju",
+    "춘천": "Chuncheon",
+    "강릉": "Gangneung",
+    "제주": "Jeju",
+    "목포": "Mokpo",
+    "안동": "Andong"
+}
 
-# 현재 시간 및 파일 이름 설정
+# 현재 시간 및 로그 파일 경로 설정
 now = datetime.datetime.now()
 date_str = now.strftime("%Y-%m-%d")
 time_str = now.strftime("%Y-%m-%d %H:%M:%S")
 log_dir = "logs"
 log_file = f"{log_dir}/{date_str}.txt"
 
-# 로그 폴더 없으면 생성
+# 로그 디렉토리 생성 (없으면)
 os.makedirs(log_dir, exist_ok=True)
 
 # 온도 크롤링
 weather_data = []
-for city in cities:
+for kr_name, en_name in cities.items():
     try:
-        response = requests.get(f"https://wttr.in/{city}?format=%t", timeout=10)
+        encoded_city = urllib.parse.quote(en_name)
+        url = f"https://wttr.in/{encoded_city}?format=%t&m"
+        response = requests.get(url, timeout=10)
         temp = response.text.strip()
-        weather_data.append(f"{city}: {temp}")
-    except Exception as e:
-        weather_data.append(f"{city}: Error ({str(e)})")
-
-# 로그 작성
-log_entry = f"[{time_str}]\n" + "\n".join(weather_data) + "\n\n"
-
-with open(log_file, "a", encoding="utf-8") as f:
-    f.write(log_entry)
-
-# Git 커밋 및 푸시
-subprocess.run(["git", "add", "."])
-subprocess.run(["git", "commit", "-m", f"Weather auto commit {time_str}"])
-subprocess.run(["git", "push"])
