@@ -44,7 +44,10 @@ for kr_name, en_name in cities.items():
     try:
         encoded_city = urllib.parse.quote(en_name)
         url = f"https://wttr.in/{encoded_city}?format=%t&m"
-        response = requests.get(url, timeout=10)
+        headers = {
+            "User-Agent": "Mozilla/5.0"
+        }
+        response = requests.get(url, headers=headers, timeout=10)
         temp = response.text.strip()
         weather_data.append(f"{kr_name}: {temp}")
     except Exception as e:
