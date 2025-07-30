@@ -43,17 +43,14 @@ weather_data = []
 for kr_name, en_name in cities.items():
     try:
         encoded_city = urllib.parse.quote(en_name)
-        timestamp = datetime.datetime.utcnow().timestamp()
-        url = f"https://wttr.in/{encoded_city}?format=%t&m&_={timestamp}"
+        url = f"https://wttr.in/{encoded_city}?format=j1"
         headers = {
-            "User-Agent": "Mozilla/5.0",
-            "Cache-Control": "no-cache",
-            "Pragma": "no-cache"
+            "User-Agent": "Mozilla/5.0"
         }
 
-
         response = requests.get(url, headers=headers, timeout=10)
-        temp = response.text.strip()
+        data = response.json()
+        temp = f"+{data['current_condition'][0]['temp_C']}°C"
         weather_data.append(f"{kr_name}: {temp}")
     except Exception as e:
         weather_data.append(f"{kr_name}: Error ({str(e)})")
