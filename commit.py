@@ -4,7 +4,20 @@ import datetime
 import requests
 import urllib.parse
 
-# 한글 도시 이름 → API용 영문 이름 맵핑
+# ⏰ KST 시간대 설정 (UTC+9)
+KST = datetime.timezone(datetime.timedelta(hours=9))
+
+# 현재 시간 및 로그 파일 경로 설정
+now = datetime.datetime.now(KST)  # ← 변경된 부분
+date_str = now.strftime("%Y-%m-%d")
+time_str = now.strftime("%Y-%m-%d %H:%M:%S")
+log_dir = "logs"
+log_file = f"{log_dir}/{date_str}.txt"
+
+# 로그 디렉토리 생성
+os.makedirs(log_dir, exist_ok=True)
+
+# 도시명 맵핑
 cities = {
     "서울": "Seoul",
     "부산": "Busan",
@@ -25,16 +38,6 @@ cities = {
     "안동": "Andong"
 }
 
-# 현재 시간 및 로그 파일 경로 설정
-now = datetime.datetime.now()
-date_str = now.strftime("%Y-%m-%d")
-time_str = now.strftime("%Y-%m-%d %H:%M:%S")
-log_dir = "logs"
-log_file = f"{log_dir}/{date_str}.txt"
-
-# 로그 디렉토리 생성 (없으면)
-os.makedirs(log_dir, exist_ok=True)
-
 # 온도 크롤링
 weather_data = []
 for kr_name, en_name in cities.items():
@@ -47,12 +50,11 @@ for kr_name, en_name in cities.items():
     except Exception as e:
         weather_data.append(f"{kr_name}: Error ({str(e)})")
 
-# 항상 로그를 변경시키기 위한 dummy 줄 추가
+# Dummy line 추가로 매번 변경 감지
 dummy_line = f"# Auto log at {time_str}"
 
 # 로그 작성
 log_entry = f"[{time_str}]\n" + "\n".join(weather_data) + f"\n{dummy_line}\n\n"
-
 with open(log_file, "a", encoding="utf-8") as f:
     f.write(log_entry)
 
