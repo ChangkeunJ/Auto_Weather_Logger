@@ -32,6 +32,7 @@ This project automatically logs hourly temperature data for major cities in Sout
 인천: 26.2°C
 ...
 ```
+...
 
 ## How It Works
 
